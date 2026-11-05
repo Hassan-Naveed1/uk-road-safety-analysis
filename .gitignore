@@ -189,3 +189,7 @@ data/raw/
 
 # Python environment
 .venv/
+
+
+# Personal project learning notes
+project-notes/
