@@ -179,3 +179,13 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+# Raw datasets
+data/raw/
+
+# SQL Server database files
+*.mdf
+*.ldf
+*.ndf
+
+# Python environment
+.venv/
