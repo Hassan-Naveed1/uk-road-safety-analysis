@@ -285,3 +285,493 @@ plt.close()
 
 print("\nJunction location chart saved successfully.")
 
+# SKIDDING AND OVERTURNING
+
+skidding_summary = (
+    df["skidding_and_overturning"]
+    .value_counts()
+    .sort_index()
+)
+
+print("\nSKIDDING AND OVERTURNING FREQUENCY")
+print(skidding_summary.to_string())
+
+# SKIDDING AND OVERTURNING
+
+skidding_labels = {
+    -1: "Data missing or out of range",
+    0: "None",
+    1: "Skidded",
+    2: "Skidded and overturned",
+    3: "Jackknifed",
+    4: "Jackknifed and overturned",
+    5: "Overturned",
+    9: "Unknown (self reported)"
+}
+
+skidding_counts = (
+    df["skidding_and_overturning"]
+    .value_counts()
+    .sort_values()
+)
+
+skidding_names = [
+    skidding_labels.get(code, f"Unrecognised code: {code}")
+    for code in skidding_counts.index
+]
+
+skidding_percentages = skidding_counts / len(df) * 100
+
+plt.figure(figsize=(12, 6))
+
+bars = plt.barh(skidding_names, skidding_counts.values)
+
+plt.title("Vehicles Involved in Reported Road Collisions by Skidding and Overturning")
+plt.xlabel("Number of Vehicles")
+plt.ylabel("Skidding and Overturning")
+
+for bar, count, percentage in zip(
+    bars, skidding_counts.values, skidding_percentages.values
+):
+    plt.text(
+        bar.get_width(),
+        bar.get_y() + bar.get_height() / 2,
+        f" {count:,} ({percentage:.2f}%)",
+        va="center",
+        fontsize=8
+    )
+
+plt.tight_layout()
+
+plt.savefig(
+    VISUALISATION_DIR / "04_vehicles_by_skidding_overturning.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.close()
+
+print("\nSkidding and overturning chart saved successfully.")
+
+# VEHICLE LEAVING CARRIAGEWAY
+
+leaving_carriageway_summary = (
+    df["vehicle_leaving_carriageway"]
+    .value_counts()
+    .sort_index()
+)
+
+print("\nVEHICLE LEAVING CARRIAGEWAY FREQUENCY")
+print(leaving_carriageway_summary.to_string())
+
+# VEHICLE LEAVING CARRIAGEWAY
+
+leaving_labels = {
+    -1: "Data missing or out of range",
+    0: "Did not leave carriageway",
+    1: "Nearside",
+    2: "Nearside and rebounded",
+    3: "Straight ahead at junction",
+    4: "Offside onto central reservation",
+    5: "Offside onto central reservation and rebounded",
+    6: "Offside crossed central reservation",
+    7: "Offside",
+    8: "Offside and rebounded",
+    9: "Unknown (self reported)"
+}
+
+leaving_counts = (
+    df["vehicle_leaving_carriageway"]
+    .value_counts()
+    .sort_values()
+)
+
+leaving_names = [
+    leaving_labels.get(code, f"Unrecognised code: {code}")
+    for code in leaving_counts.index
+]
+
+leaving_percentages = leaving_counts / len(df) * 100
+
+plt.figure(figsize=(13, 8))
+
+bars = plt.barh(leaving_names, leaving_counts.values)
+
+plt.title("Vehicles Involved in Reported Road Collisions by Carriageway Departure")
+plt.xlabel("Number of Vehicles")
+plt.ylabel("Carriageway Departure")
+
+for bar, count, percentage in zip(
+    bars, leaving_counts.values, leaving_percentages.values
+):
+    plt.text(
+        bar.get_width(),
+        bar.get_y() + bar.get_height() / 2,
+        f" {count:,} ({percentage:.2f}%)",
+        va="center",
+        fontsize=8
+    )
+
+plt.tight_layout()
+
+plt.savefig(
+    VISUALISATION_DIR / "05_vehicles_by_carriageway_departure.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.close()
+
+print("\nVehicle carriageway departure chart saved successfully.")
+
+# OBJECTS HIT IN CARRIAGEWAY
+
+hit_object_summary = (
+    df["hit_object_in_carriageway"]
+    .value_counts()
+    .sort_index()
+)
+
+print("\nOBJECTS HIT IN CARRIAGEWAY FREQUENCY")
+print(hit_object_summary.to_string())
+
+
+# OBJECTS HIT IN CARRIAGEWAY
+
+hit_object_labels = {
+    -1: "Data missing or out of range",
+    0: "None",
+    1: "Previous accident",
+    2: "Road works",
+    4: "Parked vehicle",
+    5: "Bridge (roof)",
+    6: "Bridge (side)",
+    7: "Bollard or refuge",
+    8: "Open door of vehicle",
+    9: "Central island of roundabout",
+    10: "Kerb",
+    11: "Other object",
+    12: "Any animal (except ridden horse)",
+    99: "Unknown (self reported)"
+}
+
+hit_object_counts = (
+    df["hit_object_in_carriageway"]
+    .value_counts()
+    .sort_values()
+)
+
+hit_object_names = [
+    hit_object_labels.get(code, f"Unrecognised code: {code}")
+    for code in hit_object_counts.index
+]
+
+hit_object_percentages = hit_object_counts / len(df) * 100
+
+plt.figure(figsize=(13, 8))
+
+bars = plt.barh(hit_object_names, hit_object_counts.values)
+
+plt.title("Vehicles Involved in Reported Road Collisions by Object Hit in Carriageway")
+plt.xlabel("Number of Vehicles")
+plt.ylabel("Object Hit in Carriageway")
+
+for bar, count, percentage in zip(
+    bars, hit_object_counts.values, hit_object_percentages.values
+):
+    plt.text(
+        bar.get_width(),
+        bar.get_y() + bar.get_height() / 2,
+        f" {count:,} ({percentage:.2f}%)",
+        va="center",
+        fontsize=8
+    )
+
+plt.tight_layout()
+
+plt.savefig(
+    VISUALISATION_DIR / "06_vehicles_by_object_hit_in_carriageway.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.close()
+
+print("\nObject hit in carriageway chart saved successfully.")
+
+# OBJECTS HIT OFF CARRIAGEWAY
+
+hit_off_summary = (
+    df["hit_object_off_carriageway"]
+    .value_counts()
+    .sort_index()
+)
+
+print("\nOBJECTS HIT OFF CARRIAGEWAY FREQUENCY")
+print(hit_off_summary.to_string())
+
+# OBJECTS HIT OFF CARRIAGEWAY
+
+hit_off_labels = {
+    -1: "Data missing or out of range",
+    0: "None",
+    1: "Road sign or traffic signal",
+    2: "Lamp post",
+    3: "Telegraph/electricity pole",
+    4: "Tree",
+    5: "Bus stop or shelter",
+    6: "Central crash barrier",
+    7: "Nearside/offside crash barrier",
+    8: "Submerged in water",
+    9: "Entered ditch",
+    10: "Other permanent object",
+    11: "Wall or fence",
+    99: "Unknown (self reported)"
+}
+
+hit_off_counts = (
+    df["hit_object_off_carriageway"]
+    .value_counts()
+    .sort_values()
+)
+
+hit_off_names = [
+    hit_off_labels.get(code, f"Unrecognised code: {code}")
+    for code in hit_off_counts.index
+]
+
+hit_off_percentages = hit_off_counts / len(df) * 100
+
+plt.figure(figsize=(13, 8))
+
+bars = plt.barh(hit_off_names, hit_off_counts.values)
+
+plt.title("Vehicles Involved in Reported Road Collisions by Object Hit Off Carriageway")
+plt.xlabel("Number of Vehicles")
+plt.ylabel("Object Hit Off Carriageway")
+
+for bar, count, percentage in zip(
+    bars, hit_off_counts.values, hit_off_percentages.values
+):
+    plt.text(
+        bar.get_width(),
+        bar.get_y() + bar.get_height() / 2,
+        f" {count:,} ({percentage:.2f}%)",
+        va="center",
+        fontsize=8
+    )
+
+plt.tight_layout()
+
+plt.savefig(
+    VISUALISATION_DIR / "07_vehicles_by_object_hit_off_carriageway.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.close()
+
+print("\nObject hit off carriageway chart saved successfully.")
+
+
+# FIRST POINT OF IMPACT
+
+impact_summary = (
+    df["first_point_of_impact"]
+    .value_counts()
+    .sort_index()
+)
+
+print("\nFIRST POINT OF IMPACT FREQUENCY")
+print(impact_summary.to_string())
+
+# FIRST POINT OF IMPACT
+
+impact_labels = {
+    -1: "Data missing or out of range",
+    0: "Did not impact",
+    1: "Front",
+    2: "Back",
+    3: "Offside",
+    4: "Nearside",
+    9: "Unknown (self reported)"
+}
+
+impact_counts = (
+    df["first_point_of_impact"]
+    .value_counts()
+    .sort_values()
+)
+
+impact_names = [
+    impact_labels.get(code, f"Unrecognised code: {code}")
+    for code in impact_counts.index
+]
+
+impact_percentages = impact_counts / len(df) * 100
+
+plt.figure(figsize=(12, 6))
+
+bars = plt.barh(impact_names, impact_counts.values)
+
+plt.title("Vehicles Involved in Reported Road Collisions by First Point of Impact")
+plt.xlabel("Number of Vehicles")
+plt.ylabel("First Point of Impact")
+
+for bar, count, percentage in zip(
+    bars, impact_counts.values, impact_percentages.values
+):
+    plt.text(
+        bar.get_width(),
+        bar.get_y() + bar.get_height() / 2,
+        f" {count:,} ({percentage:.2f}%)",
+        va="center",
+        fontsize=8
+    )
+
+plt.tight_layout()
+
+plt.savefig(
+    VISUALISATION_DIR / "08_vehicles_by_first_point_of_impact.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.close()
+
+print("\nFirst point of impact chart saved successfully.")
+
+# VEHICLE LEFT-HAND DRIVE
+
+left_hand_drive_summary = (
+    df["vehicle_left_hand_drive"]
+    .value_counts()
+    .sort_index()
+)
+
+print("\nVEHICLE LEFT-HAND DRIVE FREQUENCY")
+print(left_hand_drive_summary.to_string())
+
+# VEHICLE LEFT-HAND DRIVE
+
+left_hand_drive_labels = {
+    -1: "Data missing or out of range",
+    1: "No",
+    2: "Yes",
+    9: "Unknown"
+}
+
+left_hand_drive_counts = (
+    df["vehicle_left_hand_drive"]
+    .value_counts()
+    .sort_values()
+)
+
+left_hand_drive_names = [
+    left_hand_drive_labels.get(code, f"Unrecognised code: {code}")
+    for code in left_hand_drive_counts.index
+]
+
+left_hand_drive_percentages = (
+    left_hand_drive_counts / len(df) * 100
+)
+
+plt.figure(figsize=(10, 5))
+
+bars = plt.barh(
+    left_hand_drive_names,
+    left_hand_drive_counts.values
+)
+
+plt.title("Vehicles Involved in Reported Road Collisions by Left-Hand Drive Status")
+plt.xlabel("Number of Vehicles")
+plt.ylabel("Left-Hand Drive Status")
+
+for bar, count, percentage in zip(
+    bars,
+    left_hand_drive_counts.values,
+    left_hand_drive_percentages.values
+):
+    plt.text(
+        bar.get_width(),
+        bar.get_y() + bar.get_height() / 2,
+        f" {count:,} ({percentage:.2f}%)",
+        va="center",
+        fontsize=8
+    )
+
+plt.tight_layout()
+
+plt.savefig(
+    VISUALISATION_DIR / "09_vehicles_by_left_hand_drive.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.close()
+
+print("\nLeft-hand drive chart saved successfully.")
+
+# SEX OF DRIVER
+
+sex_summary = (
+    df["sex_of_driver"]
+    .value_counts()
+    .sort_index()
+)
+
+print("\nSEX OF DRIVER FREQUENCY")
+print(sex_summary.to_string())
+
+# SEX OF DRIVER
+
+sex_labels = {
+    -1: "Data missing or out of range",
+    1: "Male",
+    2: "Female",
+    3: "Not known"
+}
+
+sex_counts = (
+    df["sex_of_driver"]
+    .value_counts()
+    .sort_values()
+)
+
+sex_names = [
+    sex_labels.get(code, f"Unrecognised code: {code}")
+    for code in sex_counts.index
+]
+
+sex_percentages = sex_counts / len(df) * 100
+
+plt.figure(figsize=(10, 5))
+
+bars = plt.barh(sex_names, sex_counts.values)
+
+plt.title("Vehicles Involved in Reported Road Collisions by Driver Sex")
+plt.xlabel("Number of Vehicles")
+plt.ylabel("Driver Sex")
+
+for bar, count, percentage in zip(
+    bars, sex_counts.values, sex_percentages.values
+):
+    plt.text(
+        bar.get_width(),
+        bar.get_y() + bar.get_height() / 2,
+        f" {count:,} ({percentage:.2f}%)",
+        va="center",
+        fontsize=8
+    )
+
+plt.tight_layout()
+
+plt.savefig(
+    VISUALISATION_DIR / "10_vehicles_by_driver_sex.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.close()
+
+print("\nDriver sex chart saved successfully.")
