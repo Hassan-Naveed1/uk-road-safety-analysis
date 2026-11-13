@@ -775,3 +775,200 @@ plt.savefig(
 plt.close()
 
 print("\nDriver sex chart saved successfully.")
+
+# DRIVER AGE BAND
+
+age_band_summary = (
+    df["age_band_of_driver"]
+    .value_counts()
+    .sort_index()
+)
+
+print("\nDRIVER AGE BAND FREQUENCY")
+print(age_band_summary.to_string())
+
+# DRIVER AGE BAND
+
+age_band_labels = {
+    -1: "Data missing or out of range",
+    1: "0–5",
+    2: "6–10",
+    3: "11–15",
+    4: "16–20",
+    5: "21–25",
+    6: "26–35",
+    7: "36–45",
+    8: "46–55",
+    9: "56–65",
+    10: "66–75",
+    11: "Over 75"
+}
+
+age_band_counts = (
+    df["age_band_of_driver"]
+    .value_counts()
+    .sort_index()
+)
+
+age_band_names = [
+    age_band_labels.get(code, f"Unrecognised code: {code}")
+    for code in age_band_counts.index
+]
+
+age_band_percentages = age_band_counts / len(df) * 100
+
+plt.figure(figsize=(11, 7))
+
+bars = plt.barh(age_band_names, age_band_counts.values)
+
+plt.title("Vehicles Involved in Reported Road Collisions by Driver Age Band")
+plt.xlabel("Number of Vehicles")
+plt.ylabel("Driver Age Band")
+
+for bar, count, percentage in zip(
+    bars, age_band_counts.values, age_band_percentages.values
+):
+    plt.text(
+        bar.get_width(),
+        bar.get_y() + bar.get_height() / 2,
+        f" {count:,} ({percentage:.2f}%)",
+        va="center",
+        fontsize=8
+    )
+
+plt.tight_layout()
+
+plt.savefig(
+    VISUALISATION_DIR / "11_vehicles_by_driver_age_band.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.close()
+
+print("\nDriver age band chart saved successfully.")
+
+# DRIVER AGE
+
+driver_age_summary = (
+    df["age_of_driver"]
+    .value_counts()
+    .sort_index()
+)
+
+print("\nDRIVER AGE FREQUENCY")
+print(driver_age_summary.to_string())
+
+# DRIVER AGE STATISTICS
+
+valid_driver_ages = df.loc[
+    df["age_of_driver"] != -1,
+    "age_of_driver"
+]
+
+print("\nDRIVER AGE STATISTICS")
+print(f"Valid age records: {len(valid_driver_ages):,}")
+print(f"Minimum age: {valid_driver_ages.min()}")
+print(f"Maximum age: {valid_driver_ages.max()}")
+print(f"Mean age: {valid_driver_ages.mean():.2f}")
+print(f"Median age: {valid_driver_ages.median():.2f}")
+
+print("\nUNUSUAL DRIVER AGE CHECKS")
+
+print(
+    "Drivers under 17:",
+    (valid_driver_ages < 17).sum()
+)
+
+print(
+    "Drivers aged over 90:",
+    (valid_driver_ages > 90).sum()
+)
+
+print(
+    "Drivers aged over 100:",
+    (valid_driver_ages > 100).sum()
+)
+# DRIVER AGE DISTRIBUTION
+
+plt.figure(figsize=(12, 6))
+
+plt.hist(
+    valid_driver_ages,
+    bins=range(0, 111, 5),
+    edgecolor="black"
+)
+
+plt.title("Distribution of Driver Ages in Reported Road Collisions")
+plt.xlabel("Driver Age")
+plt.ylabel("Number of Vehicles")
+
+plt.xticks(range(0, 111, 5))
+plt.tight_layout()
+
+plt.savefig(
+    VISUALISATION_DIR / "12_vehicles_by_driver_age_distribution.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.close()
+
+print("\nDriver age distribution chart saved successfully.")
+
+# VEHICLE AGE FREQUENCY
+
+vehicle_age_summary = (
+    df["age_of_vehicle"]
+    .value_counts()
+    .sort_index()
+)
+
+print("\nVEHICLE AGE FREQUENCY")
+print(vehicle_age_summary.to_string())
+
+# VEHICLE AGE STATISTICS
+
+valid_vehicle_ages = df.loc[
+    df["age_of_vehicle"] != -1,
+    "age_of_vehicle"
+]
+
+print("\nVEHICLE AGE STATISTICS")
+print(f"Valid records: {len(valid_vehicle_ages):,}")
+print(f"Minimum age: {valid_vehicle_ages.min()}")
+print(f"Maximum age: {valid_vehicle_ages.max()}")
+print(f"Mean age: {valid_vehicle_ages.mean():.2f}")
+print(f"Median age: {valid_vehicle_ages.median():.2f}")
+
+print("\nUNUSUAL VEHICLE AGE CHECKS")
+print(f"Vehicles over 30 years: {(valid_vehicle_ages > 30).sum():,}")
+print(f"Vehicles over 50 years: {(valid_vehicle_ages > 50).sum():,}")
+print(f"Vehicles over 100 years: {(valid_vehicle_ages > 100).sum():,}")
+
+# VEHICLE AGE DISTRIBUTION
+
+plt.figure(figsize=(12, 6))
+
+plt.hist(
+    valid_vehicle_ages[valid_vehicle_ages <= 50],
+    bins=range(0, 56, 5),
+    edgecolor="black"
+)
+
+plt.title("Distribution of Vehicle Ages in Reported Road Collisions")
+plt.xlabel("Vehicle Age (Years)")
+plt.ylabel("Number of Vehicles")
+
+plt.xticks(range(0, 56, 5))
+plt.tight_layout()
+
+plt.savefig(
+    VISUALISATION_DIR / "13_vehicles_by_age.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.close()
+
+print("\nVehicle age distribution chart saved successfully.")
